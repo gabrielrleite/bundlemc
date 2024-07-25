@@ -1,6 +1,8 @@
 package com.gabrieldgamer.bundlemc.gui;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,6 +31,14 @@ public class RanksGUI {
     }
 
     private static String checkVisitante(Double a, Double A, Double b, Double B, Double c, Double C) {
+        if (a >= A && b >= B && c >= C) {
+            return "§2§l✔ §a§lVocê pode upar para esse Rank §2§l✔";
+        } else {
+            return "§4§l✖ §c§lVocê não pode upar para esse Rank §4§l✖";
+        }
+    }
+
+    private static String checkFinal(Double a, Double A, Double b, Double B, Double c, Double C) {
         if (a >= A && b >= B && c >= C) {
             return "§2§l✔ §a§lVocê pode upar de Rank §2§l✔";
         } else {
@@ -61,10 +71,18 @@ public class RanksGUI {
         InventoryGUI gui = new InventoryGUI(Bukkit.createInventory(player, 54, "§4§l⇨ Rankup"));
         Double playtime_ticks = Double.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE)) / 20.0 / 60 / 60;
         Double walkedCm = player.getStatistic(Statistic.WALK_ONE_CM) / 100.0 / 1000.0;
-        DecimalFormat d = new DecimalFormat("#.##");
+        // DecimalFormat d = new DecimalFormat("#.##");
         Double playerMoney = instance.economy.getBalance(player);
-        Double playerTime = Double.valueOf(d.format((playtime_ticks)));
-        Double playerWalk = Double.valueOf(d.format(walkedCm));
+        // Double playerTime = Double.valueOf(d.format((playtime_ticks)));
+        // Double playerWalk = Double.valueOf(d.format(walkedCm));
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat d = new DecimalFormat("#.##", symbols);
+
+        String formattedPlaytime = d.format(playtime_ticks).replace(',', '.');
+        String formattedWalkedCm = d.format(walkedCm).replace(',', '.');
+
+        Double playerTime = Double.valueOf(formattedPlaytime);
+        Double playerWalk = Double.valueOf(formattedWalkedCm);
 
         ItemStack fill_red_item = new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                 .setName(" ");
@@ -82,23 +100,78 @@ public class RanksGUI {
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
-                .addLore(checkValue(price_rankup, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$"
-                        + price_rankup)
+                .addLore(checkValue(0.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$0")
+                .addLore(checkValue(0.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§60 horas")
+                .addLore(checkValue(0.0, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§60km")
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkVisitante(playerWalk, 0.0, playerTime, 0.0, playerMoney, 0.0))
+                .addLore("");
+        ItemStack novato_item = new ItemBuilder(Material.CHAINMAIL_CHESTPLATE)
+                .setName("Novato")
+                .addLore("")
+                .addLore("§7Rank atual: " + "§2§o" + suffix)
+                .addLore("§e§lPróximo rank ➹ " + "§b§l§o" + checkRank(suffix))
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkValue(1000.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$1000.0")
                 .addLore(checkValue(2.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§62.0 horas")
                 .addLore(checkValue(0.5, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§60.5km")
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
-                .addLore(checkVisitante(playerWalk, 0.5, playerTime, 2.0, playerMoney, price_rankup))
+                .addLore(checkVisitante(playerWalk, 0.5, playerTime, 2.0, playerMoney, 1000.0))
                 .addLore("");
-        ItemStack novato_item = new ItemBuilder(Material.CHAINMAIL_CHESTPLATE)
-                .setName("Novato");
         ItemStack membro_item = new ItemBuilder(Material.IRON_CHESTPLATE)
-                .setName("Membro");
+                .setName("Membro")
+                .addLore("")
+                .addLore("§7Rank atual: " + "§2§o" + suffix)
+                .addLore("§e§lPróximo rank ➹ " + "§b§l§o" + checkRank(suffix))
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkValue(5000.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$5000.0")
+                .addLore(checkValue(2.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§64.0 horas")
+                .addLore(checkValue(0.5, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§61.0km")
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkVisitante(playerWalk, 1.0, playerTime, 4.0, playerMoney, 5000.0))
+                .addLore("");
         ItemStack aprendiz_item = new ItemBuilder(Material.GOLDEN_CHESTPLATE)
-                .setName("Aprendiz");
+                .setName("Aprendiz")
+                .addLore("")
+                .addLore("§7Rank atual: " + "§2§o" + suffix)
+                .addLore("§e§lPróximo rank ➹ " + "§b§l§o" + checkRank(suffix))
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkValue(10000.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$10000.0")
+                .addLore(checkValue(2.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§68.0 horas")
+                .addLore(checkValue(0.5, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§62.0km")
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkVisitante(playerWalk, 2.0, playerTime,8.0, playerMoney, 10000.0))
+                .addLore("");
         ItemStack veterano_item = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
-                .setName("Veterano");
+                .setName("Veterano")
+                .addLore("")
+                .addLore("§7Rank atual: " + "§2§o" + suffix)
+                .addLore("§e§lPróximo rank ➹ " + "§b§l§o" + checkRank(suffix))
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkValue(15000.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$15000.0")
+                .addLore(checkValue(2.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§616.0 horas")
+                .addLore(checkValue(0.5, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§64.0km")
+                .addLore("")
+                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("")
+                .addLore(checkVisitante(playerWalk, 4.0, playerTime, 16.0, playerMoney, 15000.0))
+                .addLore("");
         ItemStack voltar_item = new ItemBuilder(Material.MAP)
                 .setName("Voltar")
                 .addLore(" ")
@@ -119,7 +192,7 @@ public class RanksGUI {
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
-                .addLore(checkVisitante(playerWalk, 0.5, playerTime, 2.0, playerMoney, price_rankup))
+                .addLore(checkFinal(playerWalk, 0.5, playerTime, 2.0, playerMoney, price_rankup))
                 .addLore("");
 
         ItemStack novatoItemStack = new ItemBuilder(Material.TOTEM_OF_UNDYING)
@@ -176,20 +249,11 @@ public class RanksGUI {
                 .addLore("§4§l✖ §c§lVocê não pode upar de Rank §4§l✖")
                 .addLore("");
 
-        ItemStack veteranoItemStack = new ItemBuilder(Material.TOTEM_OF_UNDYING)
+            ItemStack LastItemStack = new ItemBuilder(Material.TOTEM_OF_UNDYING)
                 .setName("§d§lClique aqui para RankUpar")
                 .addLore("")
                 .addLore("§7Rank atual: " + "§2§o" + suffix)
-                .addLore("§e§lPróximo rank ➹ " + "§b§l§o" + checkRank(suffix))
-                .addLore("")
-                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
-                .addLore("")
-                .addLore(checkValue(price_rankup, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$"
-                        + price_rankup)
-                .addLore(checkValue(32.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§632.0 horas")
-                .addLore(checkValue(8.0, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§68.0km")
-                .addLore("")
-                .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
+                .addLore("=§b§l§oVocê já está no último rank")
                 .addLore("")
                 .addLore("§4§l✖ §c§lVocê não pode upar de Rank §4§l✖")
                 .addLore("");
@@ -210,7 +274,7 @@ public class RanksGUI {
         ItemButton aprendizButton = ItemButton.create(aprendizItemStack, e -> {
             return;
         });
-        ItemButton veteranoButton = ItemButton.create(veteranoItemStack, e -> {
+        ItemButton lastButton = ItemButton.create(LastItemStack, e -> {
             return;
         });
         ItemButton visitante = ItemButton.create(visitante_item, e -> {
@@ -254,8 +318,13 @@ public class RanksGUI {
                 gui.addButton(aprendizButton, 13);
                 break;
             case "Veterano":
-                gui.addButton(veteranoButton, 13);
+                //gui.addButton(veteranoButton, 13);
+                gui.addButton(lastButton, 14);
                 break;
+            default:
+                gui.addButton(lastButton, 13);
+                break;
+            
         }
         ;
 

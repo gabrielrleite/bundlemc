@@ -4,10 +4,3 @@ patterns:
 
   - pattern: 'shop|store'  # the full command to type is /helpserver shop or /helpserver store
     description: get information about the shop
-=======
-patterns:
-
-  - pattern: 'pvp|combat|fight'  # the full command to type is /helpserver pvp or /helpserver combat or /helpserver fight
-
-  - pattern: 'shop|store'  # the full command to type is /helpserver shop or /helpserver store
-    description: get information about the shop

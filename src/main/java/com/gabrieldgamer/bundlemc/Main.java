@@ -44,6 +44,7 @@ public class Main extends JavaPlugin {
         getCommand("bmcreload").setExecutor(new BMCReload(getMain()));
         new EventListener(this);
         if (!setupEconomy()) {
+            log.severe("Texto: " + getServer().getPluginManager().getPlugin("Vault"));
             log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -73,7 +74,9 @@ public class Main extends JavaPlugin {
             return false;
         }
         economy = rsp.getProvider();
-        return economy != null;
+        boolean isSetupSuccessful = economy != null;
+        log.info("Economy setup successful: " + isSetupSuccessful);
+        return isSetupSuccessful;
     }
 
 }

@@ -13,6 +13,10 @@ public class Backpack implements CommandExecutor {
     @Override
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("Este comando só pode ser executado por jogadores.");
+            return true;
+        }
         Player p = (Player) sender;
         if (!(p.hasPermission("bundlemc.bp.default"))) {
             p.sendMessage("PERMISSÃO");
@@ -20,7 +24,7 @@ public class Backpack implements CommandExecutor {
         }
         BACKPACK = Bukkit.createInventory(p.getPlayer(), 9, "§7§l" + p.getName() + "'s §4Backpack");
         ((Player) p).openInventory(BACKPACK);
-        return false;
+        return true;
     };
 
 }
