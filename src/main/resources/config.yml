@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 messages:
   joinMessageOp: true
 
@@ -14,4 +15,22 @@ mobs_money: #Dinheiro Ganho por Kill
   skeleton: 1
 mobs_chance: #Chance de Ganhar dinheiro por Kill
   zombie: 100
+=======
+messages:
+  joinMessageOp: true
+
+debug: false
+
+rankup_price:
+  Novato: 1000
+  Membro: 5000
+  Aprendiz: 10000
+  Veterano: 15000
+
+mobs_money: #Dinheiro Ganho por Kill
+  zombie: 1
+  skeleton: 1
+mobs_chance: #Chance de Ganhar dinheiro por Kill
+  zombie: 100
+>>>>>>> 05206fe2bfb6a09718986d2bb6ed16ae3e8125a7
   skeleton: 100

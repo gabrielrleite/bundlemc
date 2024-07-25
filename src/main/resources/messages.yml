@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 joinMessages:
   messageJoinOp: "§8[§6Bundle§bMC§8] §7BundleMC está rodando a versão ${version}! Para desativar essa mensagem, utilize §6/bundlemc joinMessageOp false§7."
 
 configMessages:
   true: Ativo
+=======
+joinMessages:
+  messageJoinOp: "§8[§6Bundle§bMC§8] §7BundleMC está rodando a versão ${version}! Para desativar essa mensagem, utilize §6/bundlemc joinMessageOp false§7."
+
+configMessages:
+  true: Ativo
+>>>>>>> 05206fe2bfb6a09718986d2bb6ed16ae3e8125a7
   false: Inativo

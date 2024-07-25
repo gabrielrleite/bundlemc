@@ -1,6 +1,0 @@
-joinMessages:
-  messageJoinOp: "§8[§6Bundle§bMC§8] §7BundleMC está rodando a versão ${version}! Para desativar essa mensagem, utilize §6/bundlemc joinMessageOp false§7."
-
-configMessages:
-  true: Ativo
-  false: Inativo

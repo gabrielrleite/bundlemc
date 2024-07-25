@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 main: com.gabrieldgamer.bundlemc.Main
 version: 1.1
 api-version: 1.19
@@ -57,4 +58,62 @@ permissions:
     bundlemc.rank.rankup:
       description: Acesso ao comando /rankup.
     bundlemc.rank.ranks:
+=======
+main: com.gabrieldgamer.bundlemc.Main
+version: 1.1
+api-version: 1.19
+description: Plugin BundleMC.
+author: gabrieldgamer
+name: BundleMC
+softdepend: 
+ - Vault
+depend: 
+ - RedLib
+
+commands:
+    bundlemc:
+      description: Comandos Principal (Contem Subcomandos)
+      aliases: [bmc]
+      usage: /<command>
+      permission: bundlemc.all
+    rankup:
+      description: Comando de rankup
+      usage: /<command>
+      permission: bundlemc.default
+    ranks:
+      usage: /<command>
+      permission: bundlemc.default
+    rank:
+      usage: /<command>
+      permission: bundlemc.default
+    backpack:
+      aliases: [bp]
+      usage: /<command>
+      permission: bundlemc.deafault
+
+permissions:
+    bundlemc.all:
+      default: false
+      description: Permissão Geral.
+      children:
+        bundlemc.admin: true
+        bundlemc.op: true
+    bundlemc.op:
+      default: op
+      description: Acesso à comandos Administrativos.
+    bundlemc.default:
+      default: true
+      description: Permisão básica para jogadores.
+      children:
+        bundlemc.rank: true
+    bundlemc.rank:
+      description: Acesso aos commandos de Rank.
+      children:
+        bundlemc.rank.rankup: true
+        bundlemc.rank.ranks: true
+        bundlemc.rank.rank: true
+    bundlemc.rank.rankup:
+      description: Acesso ao comando /rankup.
+    bundlemc.rank.ranks:
+>>>>>>> 05206fe2bfb6a09718986d2bb6ed16ae3e8125a7
       description: Acesso ao comando /ranks.
