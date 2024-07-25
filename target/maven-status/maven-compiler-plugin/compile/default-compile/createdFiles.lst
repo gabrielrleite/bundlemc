@@ -1,1 +1,14 @@
+com\gabrieldgamer\bundlemc\commands\Rankup.class
+com\gabrieldgamer\bundlemc\commands\TesteCommand.class
+com\gabrieldgamer\bundlemc\commands\BMCReload.class
+com\gabrieldgamer\bundlemc\gui\Example.class
+com\gabrieldgamer\bundlemc\config\MainConfig.class
+com\gabrieldgamer\bundlemc\listener\EventListener.class
 com\gabrieldgamer\bundlemc\commands\Backpack.class
+com\gabrieldgamer\bundlemc\gui\RanksGUI.class
+com\gabrieldgamer\bundlemc\listener\ActionListener.class
+com\gabrieldgamer\bundlemc\commands\Ranks.class
+com\gabrieldgamer\bundlemc\commands\BundleMC.class
+com\gabrieldgamer\bundlemc\commands\Entidades.class
+com\gabrieldgamer\bundlemc\App.class
+com\gabrieldgamer\bundlemc\Main.class
