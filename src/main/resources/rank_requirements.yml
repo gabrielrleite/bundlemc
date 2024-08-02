@@ -1,0 +1,38 @@
+novato:
+  ontime: 0.5
+  walk_distance: 1
+  money: 1000
+  mobs_kills: # Não modificar o tipo dos mobs
+    zombie: 5
+    skeleton: 3
+    spider: 2
+
+membro:
+  ontime: 5
+  walk_distance: 10
+  money: 5000
+  mobs_kills: # Não modificar o tipo dos mobs
+    zombie: 50
+    skeleton: 30
+    spider: 20
+
+aprendiz:
+  ontime: 20
+  walk_distance: 50
+  money: 10000
+  mobs_kills: # Não modificar o tipo dos mobs
+    zombie: 200
+    skeleton: 150
+    spider: 100
+    creeper: 50
+
+veterano:
+  ontime: 50
+  walk_distance: 200
+  money: 25000
+  mobs_kills: # Não modificar o tipo dos mobs
+    zombie: 800
+    skeleton: 600
+    spider: 400
+    creeper: 200
+    enderman: 50

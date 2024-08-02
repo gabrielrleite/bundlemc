@@ -36,6 +36,9 @@ public class Main extends JavaPlugin {
         if (!new File(getDataFolder(), "messages.yml").exists()) {
             saveResource("messages.yml", false);
         }
+        if (!new File(getDataFolder(), "rank_requirements.yml").exists()) {
+            saveResource("rank_requirements.yml", false);
+        }
         new ActionListener(this);
         getCommand("bundlemc").setExecutor(new BundleMC());
         getCommand("ranks").setExecutor(new Ranks());
@@ -44,8 +47,7 @@ public class Main extends JavaPlugin {
         getCommand("bmcreload").setExecutor(new BMCReload(getMain()));
         new EventListener(this);
         if (!setupEconomy()) {
-            log.severe("Texto: " + getServer().getPluginManager().getPlugin("Vault"));
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            log.severe(String.format("\033[90m[\033[33mBundle\033[96mMC\033[90m]\033[37m Desativado porque nenhuma dependência do Vault foi encontrada!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -58,7 +60,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        log.info("A versão " + getDescription().getVersion() + " do plugin §6Bundle§bMC§r foi carregada!");
+        log.info("\033[90m[\033[33mBundle\033[96mMC\033[90m]\033[37m A versão " + getDescription().getVersion() + " foi carregada!");
     }
 
     public static Main getMain() {
@@ -75,7 +77,7 @@ public class Main extends JavaPlugin {
         }
         economy = rsp.getProvider();
         boolean isSetupSuccessful = economy != null;
-        log.info("Economy setup successful: " + isSetupSuccessful);
+        log.info("\033[90m[\033[33mBundle\033[96mMC\033[90m]\033[37m Economia configurada: " + isSetupSuccessful);
         return isSetupSuccessful;
     }
 

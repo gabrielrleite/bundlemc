@@ -1,13 +1,20 @@
 package com.gabrieldgamer.bundlemc.gui;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +28,25 @@ import net.luckperms.api.model.user.User;
 
 public class RanksGUI {
 
+    private static ItemStack visitanteItemStack;
+    private static ItemStack novatoItemStack;
+    private static ItemStack membroItemStack;
+    private static ItemStack aprendizItemStack;
+    private static ConfigurationSection novatoData;
+    private static ConfigurationSection membroData;
+    private static ConfigurationSection aprendizData;
+    private static ConfigurationSection veteranoData;
+    private static Double playerTime;
+    private static Double playerWalk;
+    private static Double playerMoney;
+    private static String suffix;
+    private static Player player;
+
     static Main instance = Main.getMain();
+
+    private static EntityType EntityTypeConverter(String entityName) {
+            return EntityType.valueOf(entityName.toUpperCase());
+    }
 
     private static String checkValue(Double d, Double Value) {
         if (Value >= d) {
@@ -62,8 +87,77 @@ public class RanksGUI {
         return "Veterano";
     }
 
+    private static int getPlayerMobKills(EntityType mobType) {
+
+        int mobkilln = player.getStatistic(Statistic.KILL_ENTITY, mobType);
+        return mobkilln;
+    }
+
+    public static boolean getRankCommand(String rank) {
+        switch (rank) {
+            case "visitante":
+                return playerTime >= novatoData.getDouble("ontime") &&
+                    playerMoney >= novatoData.getDouble("money") &&
+                    playerWalk >= novatoData.getDouble("walk_distance");
+            case "novato":
+                return playerTime >= novatoData.getDouble("ontime") &&
+                    playerMoney >= novatoData.getDouble("money") &&
+                    playerWalk >= novatoData.getDouble("walk_distance");
+            case "membro":
+                return playerTime >= membroData.getDouble("ontime") &&
+                    playerMoney >= membroData.getDouble("money") &&
+                    playerWalk >= aprendizData.getDouble("walk_distance");
+            case "aprendiz":
+                return playerTime >= aprendizData.getDouble("ontime") &&
+                    playerMoney >= aprendizData.getDouble("money") &&
+                    playerWalk >= aprendizData.getDouble("walk_distance");
+            default:
+                return false;
+        } 
+    }
+
+    private static final Logger log = Logger.getLogger("Minecraft");
+    
+    public static ItemStack getItemStackForRank(String rank) {
+        ItemStack itemStack;
+
+        String cleanedRank = rank.toLowerCase().trim();
+
+        switch (cleanedRank) {
+            case "visitante":
+                itemStack = visitanteItemStack;
+                break;
+            case "novato":
+                itemStack = novatoItemStack;
+                break;
+            case "membro":
+                itemStack = membroItemStack;
+                break;
+            case "aprendiz":
+                itemStack = aprendizItemStack;
+                break;
+            default:
+                itemStack = null; // ou algum valor padrão ou mensagem de erro
+                break;
+        }
+        
+        log.severe(rank);
+        log.severe("INFO");
+        log.severe(""+itemStack);
+        return itemStack;
+    }
+
+
     public static void rankGUI(CommandSender sender, org.bukkit.command.Command command, String label,
             String[] args) {
+                
+        File rankRequirements = new File(instance.getDataFolder(), "rank_requirements.yml");
+        FileConfiguration requirementsData = YamlConfiguration.loadConfiguration(rankRequirements);
+
+        ConfigurationSection novatoData = requirementsData.getConfigurationSection("novato");
+        ConfigurationSection membroData = requirementsData.getConfigurationSection("membro");
+        ConfigurationSection aprendizData = requirementsData.getConfigurationSection("aprendiz");
+        ConfigurationSection veteranoData = requirementsData.getConfigurationSection("veterano");
         var valor = instance.getConfig();
         User user = LuckPermsProvider.get().getPlayerAdapter(Player.class).getUser((Player) sender);
         String suffix = (String) user.getCachedData().getMetaData().getSuffix();
@@ -102,7 +196,7 @@ public class RanksGUI {
                 .addLore("")
                 .addLore(checkValue(0.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$0")
                 .addLore(checkValue(0.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§60 horas")
-                .addLore(checkValue(0.0, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§60km")
+                .addLore(checkValue(0.0, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§60km | " + player.getStatistic(Statistic.KILL_ENTITY,(EntityType.valueOf("creeper".toUpperCase()))) + " Creepers")
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
@@ -116,9 +210,9 @@ public class RanksGUI {
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅ §e§lRankUp §6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
-                .addLore(checkValue(1000.0, playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$1000.0")
-                .addLore(checkValue(2.0, playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§62.0 horas")
-                .addLore(checkValue(0.5, playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§60.5km")
+                .addLore(checkValue(novatoData.getDouble("money"), playerMoney) + " §aDinheiro: §2$" + playerMoney + "§e/§6$" + novatoData.getDouble("money"))
+                .addLore(checkValue(novatoData.getDouble("ontime"), playerTime) + " §aPlay time: §2" + playerTime + " horas§e/§6" + novatoData.getDouble("ontime") + " horas")
+                .addLore(checkValue(novatoData.getDouble("walk_distance"), playerWalk) + " §aAndar: §2" + playerWalk + "km§e/§6" + novatoData.getDouble("walk_distance") + "km")
                 .addLore("")
                 .addLore("§6┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅")
                 .addLore("")
@@ -231,7 +325,7 @@ public class RanksGUI {
                 .addLore("§4§l✖ §c§lVocê não pode upar de Rank §4§l✖")
                 .addLore("");
 
-        ItemStack aprendizItemStack = new ItemBuilder(Material.TOTEM_OF_UNDYING)
+            ItemStack aprendizItemStack = new ItemBuilder(Material.TOTEM_OF_UNDYING)
                 .setName("§d§lClique aqui para RankUpar")
                 .addLore("")
                 .addLore("§7Rank atual: " + "§2§o" + suffix)
@@ -257,10 +351,18 @@ public class RanksGUI {
                 .addLore("")
                 .addLore("§4§l✖ §c§lVocê não pode upar de Rank §4§l✖")
                 .addLore("");
+        sender.sendMessage("" + getItemStackForRank(suffix.toLowerCase()));
+        sender.sendMessage("" + suffix.toLowerCase());
+        ItemButton rankupButton = ItemButton.create(getItemStackForRank(suffix.toLowerCase()), e -> {
+            if (getRankCommand(suffix) == true) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + sender.getName() + " promote rankup");
+                player.closeInventory();
+            }
 
+        });
         ItemButton visitanteButton = ItemButton.create(visitanteItemStack, e -> {
-            if (playerTime >= 2 && playerMoney >= valor.getDouble("rankup_price." + checkRank(suffix))
-                    && playerWalk >= 0 && suffix.equalsIgnoreCase("visitante")) {
+            if (playerTime >= novatoData.getDouble("ontime") && playerMoney >= novatoData.getDouble("money")
+                    && playerWalk >= novatoData.getDouble("walk_distance") && suffix.equalsIgnoreCase("visitante")) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + sender.getName() + " promote rankup");
                 player.closeInventory();
             }
@@ -306,7 +408,7 @@ public class RanksGUI {
 
         switch (suffix.toString()) {
             case "Visitante":
-                gui.addButton(visitanteButton, 13);
+                gui.addButton(rankupButton, 13);
                 break;
             case "Novato":
                 gui.addButton(novatoButton, 13);

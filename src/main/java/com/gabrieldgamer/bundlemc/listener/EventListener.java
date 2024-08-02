@@ -29,8 +29,11 @@ public class EventListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
 
-        if (instance.getConfig().getBoolean("messages.joinMessageOp") == true) {
-            event.getPlayer().sendMessage(mensagem.getString("joinMessages.messageJoinOp"));
+        if (instance.getConfig().getBoolean("messages.joinMessageOp")) {
+            String joinMessage = mensagem.getString("joinMessages.messageJoinOp");
+            String version = Main.getMain().getDescription().getVersion();
+            joinMessage = joinMessage.replace("${version}", version);
+            event.getPlayer().sendMessage(joinMessage);
         }
     }
 
