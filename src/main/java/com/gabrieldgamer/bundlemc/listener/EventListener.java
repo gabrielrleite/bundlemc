@@ -46,13 +46,14 @@ public class EventListener implements Listener {
             var Mob = event.getEntity().getName().toLowerCase();
             Double money = Double.valueOf(Valor.getInt("mobs_money." + Mob));
             Double random = (Math.random() * 100);
-            String rand = new DecimalFormat("#.##").format(random);
+            String randomString = new DecimalFormat("#.##").format(random).replace(",", ".");
             Double chance = Valor.getDouble("mobs_chance." + Mob);
+            double randomValue = Double.parseDouble(randomString);
             if (Valor.getBoolean("debug") == true) {
-                User.sendMessage("Chance Sorteada: " + Double.valueOf(rand) + " Chance do Mob: " + chance);
+                User.sendMessage("Chance Sorteada: " + Double.valueOf(randomValue) + " Chance do Mob: " + chance);
             }
             if (money != 0) {
-                if (Double.valueOf(rand) < chance) {
+                if (Double.valueOf(randomValue) < chance) {
                     instance.economy.depositPlayer(op, money);
                     User.sendMessage("Você ganhou R$" + money);
                 }

@@ -12,3 +12,63 @@ helpMessage: "§e§l----------- §r§fAjuda: BundleMC (1/1) §e§l-----------§r
 
 configMessages:
   true: Ativo
+
+rankupGUI:
+  mobs:
+    armor_stand: Suportes de Armadura
+    bat: Morcegos
+    blaze: Blazes
+    cat: Gatos
+    cave_spider: Aranhas da Caverna
+    chicken: Galinhas
+    cod: Bacalhaus
+    cow: Vacas
+    creeper: Creepers
+    dolphin: Golfinhos
+    drowned: Afogados
+    elder_guardian: Guardiões Anciãos
+    ender_dragon: Dragões do Fim
+    enderman: Endermans
+    endermite: Endermites
+    evoker: Evocadores
+    fox: Raposas
+    ghast: Ghasts
+    guardian: Guardiões
+    hoglin: Hoglins
+    horse: Cavalos
+    husk: Husk
+    illager: Illagers
+    iron_golem: Golems de Ferro
+    llama: Lhamas
+    magma_cube: Cubos de Magma
+    mooshroom: Mooshrooms
+    mule: Mulas
+    ocelot: Ocelotes
+    pig: Porcos
+    piglin: Piglins
+    piglin_brute: Piglins Brutos
+    pillager: Pillagers
+    polar_bear: Ursos Polares
+    pufferfish: Peixes-bola
+    rabbit: Coelhos
+    ravager: Ravagers
+    salmon: Salmões
+    sheep: Ovelhas
+    shulker: Shulkers
+    silverfish: Peixinhos Prateados
+    skeleton: Esqueletos
+    slime: Slimes
+    spider: Aranhas
+    squid: Polvos
+    strider: Striders
+    trader_llama: Lhamas do Comerciante
+    tropical_fish: Peixes Tropicais
+    turtle: Tartarugas
+    vex: Vexes
+    vindicator: Vindicators
+    witch: Bruxas
+    wither_skeleton: Esqueletos Wither
+    wolf: Lobos
+    zombie: Zumbis
+    zombie_pigman: Piglins Zumbis
+    zombie_villager: Aldeões Zumbis

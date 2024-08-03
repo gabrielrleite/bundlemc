@@ -12,7 +12,7 @@ commands:
     bundlemc:
       description: Comandos Principal (Contem Subcomandos)
       aliases: [bmc]
-      usage: /<command>
+      usage: /<command> <subcommand> [subcommand1]
       permission: bundlemc.all
     rankup:
       description: Comando de rankup
@@ -28,7 +28,8 @@ commands:
       aliases: [bp]
       usage: /<command>
       permission: bundlemc.default
-    bmcreload:
+    bundlemcreload:
+      aliases: [bmcreload]
       usage: /<command>
       permission: bundlemc.op
 

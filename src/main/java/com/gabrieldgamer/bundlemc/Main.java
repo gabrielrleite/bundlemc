@@ -44,7 +44,7 @@ public class Main extends JavaPlugin {
         getCommand("ranks").setExecutor(new Ranks());
         getCommand("rankup").setExecutor(new Rankup());
         getCommand("backpack").setExecutor(new Backpack());
-        getCommand("bmcreload").setExecutor(new BMCReload(getMain()));
+        getCommand("bundlemcreload").setExecutor(new BMCReload(getMain()));
         new EventListener(this);
         if (!setupEconomy()) {
             log.severe(String.format("\033[90m[\033[33mBundle\033[96mMC\033[90m]\033[37m Desativado porque nenhuma dependência do Vault foi encontrada!", getDescription().getName()));
